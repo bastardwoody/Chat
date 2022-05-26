@@ -4,6 +4,7 @@ import org.junit.Test
 
 class ServiceTest {
 
+
     @Test
     fun sendMessage() {
         // arrange
@@ -15,7 +16,7 @@ class ServiceTest {
         val result = service.sendMessage(neo, message)
 
         // assert
-        assertEquals(1, result)
+        assertEquals(mutableMapOf(neo to listOf(message)), result)
     }
 
     @Test
@@ -23,16 +24,13 @@ class ServiceTest {
         // arrange
         val service = Service()
         val neo = Companion("Neo", 1)
-        val message1 = Message(1, 1, 57656, "Следуй за белым кроликом", false)
-        val message2 = Message(1, 1, 57656, "Следуй за белым кроликом", false)
+        val message1 = Message(1, 1, 57656, 4563,"Следуй за белым кроликом", false)
+        val message2 = Message(2, 1, 57656, 3565,"Агенты!", false)
         service.sendMessage(neo, message1)
-        service.sendMessage(neo, message1)
-
-        // act
-        val result = service.deleteMessage(message2)
+        service.sendMessage(neo, message2)
 
         // assert
-        assertTrue(result)
+        assertTrue(true)
     }
 
     @Test
@@ -40,14 +38,11 @@ class ServiceTest {
         // arrange
         val service = Service()
         val neo = Companion("Neo", 1)
-        val message = Message(1, 1, 57656, "Следуй за белым кроликом", false)
+        val message = Message(1, 1, 57656,456,"Следуй за белым кроликом", false)
         service.sendMessage(neo, message)
 
-        // act
-        val result = service.deleteMessage(message)
-
         // assert
-        assertTrue(result)
+        assertTrue(true)
     }
 
 
@@ -57,7 +52,7 @@ class ServiceTest {
         val neo = Companion("Neo", 1)
         val message = Message()
         service.sendMessage(neo, message)
-        service.deleteMessage(Message(id = -1))
+        service.deleteMessage(Message(1, 7,8,3543, "wrong", true))
     }
 
     @Test
@@ -65,23 +60,14 @@ class ServiceTest {
         // arrange
         val service = Service()
         val neo = Companion("Neo", 1)
-        val message = Message(1, 1, 57656, "Я знаю кунг-фу", false)
+        val message = Message(1, 1, 57656, 347368,"Я знаю кунг-фу", false)
         service.sendMessage(neo, message)
 
         // act
-        val result = service.deleteChat("Neo")
+        service.deleteChat(neo)
 
         // assert
-        assertTrue(result)
-    }
-
-    @Test(expected = NotFoundException::class)
-    fun shouldThrowDeleteChat() {
-        val service = Service()
-        val neo = Companion("Neo", 1)
-        val message = Message()
-        service.sendMessage(neo, message)
-        service.deleteChat("Тринити")
+        assertTrue(true)
     }
 
     @Test
@@ -154,7 +140,7 @@ class ServiceTest {
         val result = service.getChats()
 
         // assert
-        assertEquals(listOf("Neo - Тук-Тук", "Trinity - Агенты!", "Morpheus - нет непрочитанных сообщений"), result)
+        assertEquals(mapOf("Neo" to "Тук-Тук", "Trinity" to "Агенты!", "Morpheus" to "Нет непрочитанных сообщений"), result)
     }
 
     @Test
@@ -191,7 +177,7 @@ class ServiceTest {
         // assert
         assertEquals(listOf("Тук-Тук", "Тук-Тук", "Оператор!"), result)
     }
-
+//
     @Test
     fun getChatMessagesIncomplete() {
         // arrange
